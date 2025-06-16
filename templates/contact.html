@@ -100,15 +100,16 @@
     google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Jour', 'Disponibilité'],
-        ['Lundi', 8],
-        ['Mardi', 6],
-        ['Mercredi', 7],
-        ['Jeudi', 9],
-        ['Vendredi', 4]
-      ]);
+   <div class="container">
+    <h2>Plages horaires de travail</h2>
+    <ul>
+      <li><span class="day">Lundi :</span> 9h00 – 17h00</li>
+      <li><span class="day">Mardi :</span> 10h00 – 16h00</li>
+      <li><span class="day">Mercredi :</span> 9h00 – 12h00</li>
+      <li><span class="day">Jeudi :</span> 8h30 – 17h30</li>
+      <li><span class="day">Vendredi :</span> 9h00 – 13h00</li>
+    </ul>
+  </div>
 
       var options = {
         title: 'Disponibilité Hebdomadaire',
