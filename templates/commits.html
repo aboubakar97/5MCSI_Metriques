@@ -19,7 +19,6 @@
           dataTable.addColumn('number', 'Commits');
 
           data.results.forEach(entry => {
-            // Ici, "Jour" est en réalité la minute de la journée (0 à 59)
             dataTable.addRow([entry.Jour.toString(), entry.temp]);
           });
 
