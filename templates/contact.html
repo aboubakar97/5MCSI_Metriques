@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact - Jean Dupont</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .info, .form-section {
+      margin-top: 30px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #1b9e77;
+    }
+
+    #chart_div {
+      margin-top: 50px;
+      height: 250px;
+    }
+
+    form {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    input, textarea {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 150px;
+      padding: 10px;
+      background-color: #1b9e77;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #148060;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contactez-moi</h1>
+
+    <div class="info">
+      <p><span class="label">Nom :</span> Jean Dupont</p>
+      <p><span class="label">Adresse :</span> 12 rue des Lilas, 75015 Paris, France</p>
+      <p><span class="label">Téléphone :</span> +33 6 12 34 56 78</p>
+      <p><span class="label">Email :</span> jean.dupont@example.com</p>
+      <p><span class="label">Profession :</span> Développeur Web Full Stack</p>
+      <p><span class="label">Site Web :</span> <a href="https://www.jeandupont.dev" target="_blank">www.jeandupont.dev</a></p>
+    </div>
+
+    <div class="form-section">
+      <h2>Laissez-moi un message</h2>
+      <form action="/envoyer-message" method="POST">
+        <input type="text" name="prenom" placeholder="Prénom" required>
+        <input type="text" name="nom" placeholder="Nom" required>
+        <textarea name="message" rows="5" placeholder="Votre message..." required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+
+    <div id="chart_div"></div>
+  </div>
+
+  <script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Jour', 'Disponibilité'],
+        ['Lundi', 8],
+        ['Mardi', 6],
+        ['Mercredi', 7],
+        ['Jeudi', 9],
+        ['Vendredi', 4]
+      ]);
+
+      var options = {
+        title: 'Disponibilité Hebdomadaire',
+        legend: { position: 'none' },
+        hAxis: { title: 'Jour' },
+        vAxis: { title: 'Heures disponibles' },
+        colors: ['#1b9e77'],
+        backgroundColor: '#f9f9f9'
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
+</body>
+</html>
