@@ -36,30 +36,27 @@ def monhistogramme():
     return render_template("histogramme.html")
 
 @app.route('/commits/')
-def commits():
-    return render_template('commits.html')
+def commits_minute_distribution():
+    url = 'https://api.github.com/repos/aboubakar97/5MCSI_Metriques/commits'
+    response = urlopen(url)
+    raw_content = response.read()
+    json_content = json.loads(raw_content.decode('utf-8'))
 
-@app.route('/api/commits/minutes')
-def get_commit_minutes():
-    url = "https://api.github.com/repos/aboubakar97/5MCSI_Metriques/commits"
-    response = requests.get(url)
-    data = response.json()
+    minutes = []
 
-    minutes_list = []
+    for commit in json_content:
+        date_str = commit.get('commit', {}).get('author', {}).get('date')
+        if date_str:
+            dt = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
+            minutes.append(dt.minute)
 
-    for commit in data:
-        try:
-            date_str = commit['commit']['author']['date']
-            date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
-            minutes_list.append(date_obj.minute)
-        except Exception as e:
-            continue
+    # Compter le nombre de commits par minute
+    counter = Counter(minutes)
 
-    # Compter combien de commits ont été faits à chaque minute (0-59)
-    commit_counts = Counter(minutes_list)
-    commit_data = [{"minute": m, "count": commit_counts[m]} for m in range(60)]
+    # Générer une liste de 0 à 59 avec leur valeur de commit
+    results = [{'Jour': minute, 'temp': counter.get(minute, 0)} for minute in range(60)]
 
-    return jsonify(commit_data)
+    return jsonify(results=results)
   
 if __name__ == "__main__":
   app.run(debug=True)
