@@ -1,54 +1,50 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Commits Minute par Minute</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f2f2f2;
-    }
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Commits par Minute</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+    <h2>Répartition des commits minute par minute</h2>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
 
-    #chart_div {
-      width: 100%;
-      height: 500px;
-      margin: auto;
-    }
-  </style>
-</head>
-<body>
-  <h2>Commits par Minute</h2>
-  <div id="chart_div"></div>
+      function drawBackgroundColor() {
+        function drawChart(data) {
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Minute');
+          dataTable.addColumn('number', 'Commits');
 
-  <script>
-    google.charts.load('current', {packages: ['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      fetch('/api/commits/minutes')
-        .then(response => response.json())
-        .then(data => {
-          let chartData = [['Minute', 'Commits']];
-          data.forEach(item => {
-            chartData.push([item.minute.toString(), item.count]);
+          data.results.forEach(entry => {
+            // Ici, "Jour" est en réalité la minute de la journée (0 à 59)
+            dataTable.addRow([entry.Jour.toString(), entry.temp]);
           });
 
-          let dataTable = google.visualization.arrayToDataTable(chartData);
-
-          let options = {
+          var options = {
             title: 'Commits par minute',
-            hAxis: { title: 'Minute (0–59)' },
-            vAxis: { title: 'Nombre de Commits' },
-            legend: 'none',
-            colors: ['#1b9e77']
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            hAxis: {
+              title: 'Minute (0 à 59)'
+            },
+            vAxis: {
+              title: 'Nombre de commits'
+            }
           };
 
-          let chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(dataTable, options);
-        });
-    }
-  </script>
-</body>
+        }
+
+        fetch('/commit/')
+          .then(response => response.json())
+          .then(data => {
+            drawChart(data);
+          });
+      }
+    </script>
+  </body>
 </html>
