@@ -35,7 +35,7 @@ def mongraphique():
 def monhistogramme():
     return render_template("histogramme.html")
 
-@app.route('/commits/')
+@app.route('/commit/')
 def commits_minute_distribution():
     url = 'https://api.github.com/repos/aboubakar97/5MCSI_Metriques/commits'
     response = urlopen(url)
@@ -57,6 +57,11 @@ def commits_minute_distribution():
     results = [{'Jour': minute, 'temp': counter.get(minute, 0)} for minute in range(60)]
 
     return jsonify(results=results)
+
+@app.route("/commits/")
+def commits():
+    return render_template("commits.html")
+
   
 if __name__ == "__main__":
   app.run(debug=True)
